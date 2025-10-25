@@ -9,6 +9,9 @@
     "experiments": {
       "baseUrl": "/DeliveryApp/"
     },
+    "web": {
+      "favicon": "./assets/favicon.svg"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
