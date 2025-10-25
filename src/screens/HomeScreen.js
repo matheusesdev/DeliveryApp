@@ -1,3 +1,4 @@
+// A Home lista alguns itens de exemplo. Tocou no card? Vai para os detalhes.
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,6 +25,7 @@ const DATA = [
 ];
 
 export default function HomeScreen({ navigation }) {
+  // Um cabeçalho simples e simpático para separar a lista
   const header = useMemo(
     () => (
       <View style={styles.section}>
@@ -35,13 +37,16 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
+  {/* FlatList porque é leve e performática. Mesmo com poucos itens, já deixamos pronto. */}
+  <FlatList
         data={DATA}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={header}
         contentContainerStyle={{ padding: 16 }}
         ItemSeparatorComponent={() => <View style={{ height: 16 }} />}
         renderItem={({ item }) => (
+          <>
+          {/* A gente deixa o card "clicável" no todo. UX direto ao ponto. */}
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => navigation.navigate('Details', { item })}
@@ -56,9 +61,11 @@ export default function HomeScreen({ navigation }) {
               </View>
             </View>
           </TouchableOpacity>
+          </>
         )}
       />
-      <View style={styles.bottomBar}>
+  {/* A barra aqui é só decorativa – a real vem do TabNavigator. */}
+  <View style={styles.bottomBar}>
         <Ionicons name="home" size={20} color="#1a1309" />
         <Ionicons name="search" size={20} color="#1a1309" />
         <Ionicons name="basket" size={20} color="#1a1309" />

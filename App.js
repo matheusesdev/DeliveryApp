@@ -1,3 +1,5 @@
+// Import obrigatório do gesture-handler: ele deve vir ANTES de qualquer outra importação.
+// Sem isso, a navegação pode quebrar ou dar erro estranho no Android.
 import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -5,14 +7,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+// Telas principais do app
 import HomeScreen from './src/screens/HomeScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
 import CartScreen from './src/screens/CartScreen';
+// Tela de placeholder para seções ainda em construção
+import PlaceholderScreen from './src/screens/PlaceholderScreen';
 import { CartProvider, useCart } from './src/context/CartContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+// Um toque de identidade visual: mesmo fundo em todas as telas
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -59,10 +65,21 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: 'Home' }} />
+      {/* A aba do carrinho mostra o total de itens para dar feedback imediato */}
       <Tab.Screen name="Cart" component={CartScreen} options={{ title: `Pedido${count ? ` (${count})` : ''}` }} />
-      {/* Telas "decorativas" para compor a barra, podem ser implementadas depois */}
-      <Tab.Screen name="Search" component={HomeScreen} options={{ title: 'Buscar' }} />
-      <Tab.Screen name="Profile" component={HomeScreen} options={{ title: 'Perfil' }} />
+      {/* Abas ainda não implementadas ganham uma tela simpática de "Em construção" */}
+      <Tab.Screen
+        name="Search"
+        component={PlaceholderScreen}
+        initialParams={{ message: 'Busca – em construção' }}
+        options={{ title: 'Buscar' }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={PlaceholderScreen}
+        initialParams={{ message: 'Perfil – em construção' }}
+        options={{ title: 'Perfil' }}
+      />
     </Tab.Navigator>
   );
 }
@@ -71,6 +88,7 @@ export default function App() {
   return (
     <CartProvider>
       <NavigationContainer theme={theme}>
+        {/* Preferimos status bar escura aqui porque a maioria dos headers é clara */}
         <StatusBar barStyle="dark-content" />
         <TabNavigator />
       </NavigationContainer>

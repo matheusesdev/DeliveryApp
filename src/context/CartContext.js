@@ -1,10 +1,15 @@
+// Um contexto simples para centralizar o carrinho.
+// Nada de overengineering: estado local com um objeto e alguns helpers.
 import React, { createContext, useContext, useMemo, useState } from 'react';
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState({}); // { [id]: { item, qty } }
+  // Guardamos itens como um dicionário: { [id]: { item, qty } }
+  // Isso facilita incrementar/decrementar sem precisar varrer arrays.
+  const [items, setItems] = useState({});
 
+  // Quando o usuário aperta "adicionar ao pedido" no detalhe, caímos aqui.
   const addItem = (item) => {
     setItems((prev) => {
       const existing = prev[item.id];
@@ -13,6 +18,7 @@ export function CartProvider({ children }) {
     });
   };
 
+  // Ação direta: remove o item do carrinho sem rodeios.
   const removeItem = (id) => {
     setItems((prev) => {
       const copy = { ...prev };
@@ -21,6 +27,7 @@ export function CartProvider({ children }) {
     });
   };
 
+  // Botão de "+": só aumenta a quantidade daquele item.
   const increment = (id) => {
     setItems((prev) => {
       const entry = prev[id];
@@ -29,6 +36,7 @@ export function CartProvider({ children }) {
     });
   };
 
+  // Botão de "-": se bater zero, a gente tira o item da lista.
   const decrement = (id) => {
     setItems((prev) => {
       const entry = prev[id];
@@ -43,6 +51,7 @@ export function CartProvider({ children }) {
     });
   };
 
+  // Derivados úteis para mostrar no UI (badge na tab e total do pedido)
   const { count, total } = useMemo(() => {
     const values = Object.values(items);
     const count = values.reduce((acc, it) => acc + it.qty, 0);
@@ -58,11 +67,13 @@ export function CartProvider({ children }) {
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
 
+// Um pequeno azedinho para evitar uso fora do provider (ajuda no dev)
 export const useCart = () => {
   const ctx = useContext(CartContext);
   if (!ctx) throw new Error('useCart must be used within CartProvider');
   return ctx;
 };
 
+// Formatação BRL que usamos em todo lugar
 export const currency = (n) =>
   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(n);
