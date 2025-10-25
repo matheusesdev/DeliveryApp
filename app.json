@@ -5,6 +5,10 @@
     "scheme": "deliveryapp",
     "version": "1.0.0",
     "orientation": "portrait",
+    "runtimeVersion": { "policy": "sdkVersion" },
+    "experiments": {
+      "baseUrl": "/DeliveryApp/"
+    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
