@@ -1,3 +1,5 @@
+// Detalhes do item escolhido: foto, descrição e o botão "adicionar ao pedido".
+// Objetivo aqui é ser claro e direto, sem distrações.
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useCart, currency } from '../context/CartContext';
@@ -6,6 +8,7 @@ export default function DetailsScreen({ route, navigation }) {
   const { item } = route.params;
   const { addItem } = useCart();
 
+  // A ação principal desta tela – adiciona ao carrinho e volta para a Home.
   const onAdd = () => {
     addItem(item);
     // feedback rápido

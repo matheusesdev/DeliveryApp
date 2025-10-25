@@ -1,9 +1,12 @@
+// O carrinho é o lugar onde a pessoa confere tudo antes de finalizar.
+// Mantemos tudo à vista: título, quantidade, subtotal e total.
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useCart, currency } from '../context/CartContext';
 
 export default function CartScreen() {
   const { items, increment, decrement, removeItem, total } = useCart();
+  // Transformamos o dicionário em lista para o FlatList.
   const data = Object.values(items);
 
   return (
@@ -12,7 +15,7 @@ export default function CartScreen() {
         data={data}
         keyExtractor={(e) => e.item.id}
         contentContainerStyle={{ padding: 16 }}
-        ListEmptyComponent={<Text style={styles.empty}>Seu carrinho está vazio.</Text>}
+  ListEmptyComponent={<Text style={styles.empty}>Seu carrinho está vazio.</Text>}
         renderItem={({ item: entry }) => (
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
