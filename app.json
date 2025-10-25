@@ -5,18 +5,32 @@
     "scheme": "deliveryapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "runtimeVersion": { "policy": "sdkVersion" },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
     "experiments": {
       "baseUrl": "/DeliveryApp/"
-    },
-    "web": {
-      "favicon": "./assets/favicon.svg"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
-    ]
+    ],
+    "android": {
+      "package": "com.matheusesdev.deliveryapp"
+    },
+    "ios": {
+      "bundleIdentifier": "com.matheusesdev.deliveryapp"
+    },
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "88a1c6ba-aa26-4443-a42f-b512614bf7c1"
+      }
+    },
+    "owner": "matheuses18"
   }
 }
