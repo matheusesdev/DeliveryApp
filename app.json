@@ -12,7 +12,8 @@
       "baseUrl": "/DeliveryApp/"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/88a1c6ba-aa26-4443-a42f-b512614bf7c1"
     },
     "assetBundlePatterns": [
       "**/*"
