@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "DeliveryApp",
+    "slug": "deliveryapp",
+    "scheme": "deliveryapp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
