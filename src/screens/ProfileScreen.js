@@ -35,7 +35,7 @@ export default function ProfileScreen({ navigation }) {
   };
 
   const handlePaymentMethods = () => {
-    Alert.alert('Formas de Pagamento', 'Funcionalidade em desenvolvimento');
+    navigation.navigate('PaymentMethods');
   };
 
   const handleAddresses = () => {

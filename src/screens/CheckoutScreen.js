@@ -13,14 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useCart, currency } from '../context/CartContext';
 import { useAddress } from '../context/AddressContext';
 import { useOrders } from '../context/OrderContext';
-
-// Mock de formas de pagamento - posteriormente virá de um contexto
-const PAYMENT_METHODS = [
-  { id: 'pix', name: 'PIX', icon: 'qr-code-outline', description: 'Pagamento instantâneo' },
-  { id: 'credit', name: 'Cartão de Crédito', icon: 'card-outline', description: 'Visa •••• 1234' },
-  { id: 'debit', name: 'Cartão de Débito', icon: 'card-outline', description: 'Mastercard •••• 5678' },
-  { id: 'money', name: 'Dinheiro', icon: 'cash-outline', description: 'Pagamento na entrega' },
-];
+import { usePayment } from '../context/PaymentContext';
 
 const DELIVERY_FEE = 8.00;
 
@@ -28,8 +21,9 @@ export default function CheckoutScreen({ navigation }) {
   const { items, total, clearCart } = useCart();
   const { addresses, defaultAddress } = useAddress();
   const { addOrder } = useOrders();
+  const { allMethods, defaultMethod } = usePayment();
   const [selectedAddress, setSelectedAddress] = useState(defaultAddress?.id);
-  const [selectedPayment, setSelectedPayment] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState(defaultMethod?.id);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [changeFor, setChangeFor] = useState('');
@@ -37,7 +31,7 @@ export default function CheckoutScreen({ navigation }) {
 
   const data = Object.values(items);
   const selectedAddressData = addresses.find(a => a.id === selectedAddress);
-  const selectedPaymentData = PAYMENT_METHODS.find(p => p.id === selectedPayment);
+  const selectedPaymentData = allMethods.find(p => p.id === selectedPayment);
   const finalTotal = total + DELIVERY_FEE;
 
   const handleConfirmOrder = () => {
@@ -147,10 +141,20 @@ export default function CheckoutScreen({ navigation }) {
               onPress={() => setShowPaymentModal(true)}
             >
               <View style={styles.cardContent}>
-                <Ionicons name={selectedPaymentData.icon} size={24} color="#d6a05b" />
+                <Ionicons 
+                  name={selectedPaymentData.icon || 'card'} 
+                  size={24} 
+                  color="#d6a05b" 
+                />
                 <View style={{ flex: 1, marginLeft: 12 }}>
-                  <Text style={styles.cardLabel}>{selectedPaymentData.name}</Text>
-                  <Text style={styles.cardText}>{selectedPaymentData.description}</Text>
+                  <Text style={styles.cardLabel}>
+                    {selectedPaymentData.brand 
+                      ? `${selectedPaymentData.brand} •••• ${selectedPaymentData.lastDigits}` 
+                      : selectedPaymentData.name}
+                  </Text>
+                  <Text style={styles.cardText}>
+                    {selectedPaymentData.description || selectedPaymentData.holderName || ''}
+                  </Text>
                 </View>
                 <Ionicons name="chevron-forward" size={20} color="#6b655c" />
               </View>
@@ -286,7 +290,7 @@ export default function CheckoutScreen({ navigation }) {
             </View>
 
             <ScrollView style={styles.modalBody}>
-              {PAYMENT_METHODS.map((method) => (
+              {allMethods.map((method) => (
                 <TouchableOpacity
                   key={method.id}
                   style={[
@@ -298,10 +302,18 @@ export default function CheckoutScreen({ navigation }) {
                     setShowPaymentModal(false);
                   }}
                 >
-                  <Ionicons name={method.icon} size={24} color="#d6a05b" />
+                  <Ionicons 
+                    name={method.icon || 'card'} 
+                    size={24} 
+                    color="#d6a05b" 
+                  />
                   <View style={{ flex: 1, marginLeft: 12 }}>
-                    <Text style={styles.modalItemLabel}>{method.name}</Text>
-                    <Text style={styles.modalItemText}>{method.description}</Text>
+                    <Text style={styles.modalItemLabel}>
+                      {method.brand ? `${method.brand} •••• ${method.lastDigits}` : method.name}
+                    </Text>
+                    <Text style={styles.modalItemText}>
+                      {method.description || method.holderName || method.name}
+                    </Text>
                   </View>
                   {selectedPayment === method.id && (
                     <Ionicons name="checkmark-circle" size={24} color="#d6a05b" />

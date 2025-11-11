@@ -16,9 +16,11 @@ import SearchScreen from './src/screens/SearchScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import AddressesScreen from './src/screens/AddressesScreen';
 import OrderHistoryScreen from './src/screens/OrderHistoryScreen';
+import PaymentMethodsScreen from './src/screens/PaymentMethodsScreen';
 import { CartProvider, useCart } from './src/context/CartContext';
 import { AddressProvider } from './src/context/AddressContext';
 import { OrderProvider } from './src/context/OrderContext';
+import { PaymentProvider } from './src/context/PaymentContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -77,6 +79,7 @@ function ProfileStack() {
       <Stack.Screen name="ProfileMain" component={ProfileScreen} options={{ title: 'Perfil' }} />
       <Stack.Screen name="Addresses" component={AddressesScreen} options={{ title: 'Meus Endereços' }} />
       <Stack.Screen name="OrderHistory" component={OrderHistoryScreen} options={{ title: 'Histórico de Pedidos' }} />
+      <Stack.Screen name="PaymentMethods" component={PaymentMethodsScreen} options={{ title: 'Formas de Pagamento' }} />
     </Stack.Navigator>
   );
 }
@@ -125,11 +128,13 @@ export default function App() {
     <CartProvider>
       <AddressProvider>
         <OrderProvider>
-          <NavigationContainer theme={theme}>
-            {/* Preferimos status bar escura aqui porque a maioria dos headers é clara */}
-            <StatusBar barStyle="dark-content" />
-            <TabNavigator />
-          </NavigationContainer>
+          <PaymentProvider>
+            <NavigationContainer theme={theme}>
+              {/* Preferimos status bar escura aqui porque a maioria dos headers é clara */}
+              <StatusBar barStyle="dark-content" />
+              <TabNavigator />
+            </NavigationContainer>
+          </PaymentProvider>
         </OrderProvider>
       </AddressProvider>
     </CartProvider>
