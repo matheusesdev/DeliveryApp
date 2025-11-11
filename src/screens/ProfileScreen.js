@@ -31,7 +31,7 @@ export default function ProfileScreen({ navigation }) {
   };
 
   const handleOrderHistory = () => {
-    Alert.alert('Histórico de Pedidos', 'Funcionalidade em desenvolvimento');
+    navigation.navigate('OrderHistory');
   };
 
   const handlePaymentMethods = () => {
