@@ -14,7 +14,9 @@ import CartScreen from './src/screens/CartScreen';
 import CheckoutScreen from './src/screens/CheckoutScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import AddressesScreen from './src/screens/AddressesScreen';
 import { CartProvider, useCart } from './src/context/CartContext';
+import { AddressProvider } from './src/context/AddressContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,6 +62,22 @@ function CartStack() {
   );
 }
 
+function ProfileStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#d6a05b' },
+        headerTitleStyle: { color: '#1a1309', fontWeight: '800', fontSize: 24 },
+        headerTintColor: '#1a1309',
+        contentStyle: { backgroundColor: '#f2e9dd' },
+      }}
+    >
+      <Stack.Screen name="ProfileMain" component={ProfileScreen} options={{ title: 'Perfil' }} />
+      <Stack.Screen name="Addresses" component={AddressesScreen} options={{ title: 'Meus Endereços' }} />
+    </Stack.Navigator>
+  );
+}
+
 function TabNavigator() {
   const { count } = useCart();
   return (
@@ -92,7 +110,7 @@ function TabNavigator() {
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileScreen}
+        component={ProfileStack}
         options={{ title: 'Perfil' }}
       />
     </Tab.Navigator>
@@ -102,11 +120,13 @@ function TabNavigator() {
 export default function App() {
   return (
     <CartProvider>
-      <NavigationContainer theme={theme}>
-        {/* Preferimos status bar escura aqui porque a maioria dos headers é clara */}
-        <StatusBar barStyle="dark-content" />
-        <TabNavigator />
-      </NavigationContainer>
+      <AddressProvider>
+        <NavigationContainer theme={theme}>
+          {/* Preferimos status bar escura aqui porque a maioria dos headers é clara */}
+          <StatusBar barStyle="dark-content" />
+          <TabNavigator />
+        </NavigationContainer>
+      </AddressProvider>
     </CartProvider>
   );
 }

@@ -11,33 +11,9 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useCart, currency } from '../context/CartContext';
+import { useAddress } from '../context/AddressContext';
 
-// Mock de dados - posteriormente virão de um contexto ou API
-const MOCK_ADDRESSES = [
-  {
-    id: '1',
-    label: 'Casa',
-    street: 'Rua das Flores, 123',
-    complement: 'Apto 45',
-    neighborhood: 'Centro',
-    city: 'São Paulo',
-    state: 'SP',
-    zipCode: '01000-000',
-    isDefault: true,
-  },
-  {
-    id: '2',
-    label: 'Trabalho',
-    street: 'Av. Paulista, 1000',
-    complement: 'Sala 801',
-    neighborhood: 'Bela Vista',
-    city: 'São Paulo',
-    state: 'SP',
-    zipCode: '01310-100',
-    isDefault: false,
-  },
-];
-
+// Mock de formas de pagamento - posteriormente virá de um contexto
 const PAYMENT_METHODS = [
   { id: 'pix', name: 'PIX', icon: 'qr-code-outline', description: 'Pagamento instantâneo' },
   { id: 'credit', name: 'Cartão de Crédito', icon: 'card-outline', description: 'Visa •••• 1234' },
@@ -49,7 +25,8 @@ const DELIVERY_FEE = 8.00;
 
 export default function CheckoutScreen({ navigation }) {
   const { items, total, clearCart } = useCart();
-  const [selectedAddress, setSelectedAddress] = useState(MOCK_ADDRESSES.find(a => a.isDefault)?.id || MOCK_ADDRESSES[0]?.id);
+  const { addresses, defaultAddress } = useAddress();
+  const [selectedAddress, setSelectedAddress] = useState(defaultAddress?.id);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [showAddressModal, setShowAddressModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -57,7 +34,7 @@ export default function CheckoutScreen({ navigation }) {
   const [observations, setObservations] = useState('');
 
   const data = Object.values(items);
-  const selectedAddressData = MOCK_ADDRESSES.find(a => a.id === selectedAddress);
+  const selectedAddressData = addresses.find(a => a.id === selectedAddress);
   const selectedPaymentData = PAYMENT_METHODS.find(p => p.id === selectedPayment);
   const finalTotal = total + DELIVERY_FEE;
 
@@ -231,7 +208,7 @@ export default function CheckoutScreen({ navigation }) {
             </View>
 
             <ScrollView style={styles.modalBody}>
-              {MOCK_ADDRESSES.map((address) => (
+              {addresses.map((address) => (
                 <TouchableOpacity
                   key={address.id}
                   style={[
