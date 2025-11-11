@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './src/screens/HomeScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
 import CartScreen from './src/screens/CartScreen';
+import CheckoutScreen from './src/screens/CheckoutScreen';
 import SearchScreen from './src/screens/SearchScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import { CartProvider, useCart } from './src/context/CartContext';
@@ -43,6 +44,22 @@ function HomeStack() {
   );
 }
 
+function CartStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#d6a05b' },
+        headerTitleStyle: { color: '#1a1309', fontWeight: '800', fontSize: 24 },
+        headerTintColor: '#1a1309',
+        contentStyle: { backgroundColor: '#f2e9dd' },
+      }}
+    >
+      <Stack.Screen name="CartMain" component={CartScreen} options={{ title: 'Pedido' }} />
+      <Stack.Screen name="Checkout" component={CheckoutScreen} options={{ title: 'Finalizar Pedido' }} />
+    </Stack.Navigator>
+  );
+}
+
 function TabNavigator() {
   const { count } = useCart();
   return (
@@ -66,7 +83,7 @@ function TabNavigator() {
     >
       <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: 'Home' }} />
       {/* A aba do carrinho mostra o total de itens para dar feedback imediato */}
-      <Tab.Screen name="Cart" component={CartScreen} options={{ title: `Pedido${count ? ` (${count})` : ''}` }} />
+      <Tab.Screen name="Cart" component={CartStack} options={{ title: `Pedido${count ? ` (${count})` : ''}` }} />
       {/* Telas de busca e perfil agora implementadas */}
       <Tab.Screen
         name="Search"
