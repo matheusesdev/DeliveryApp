@@ -12,6 +12,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useCart, currency } from '../context/CartContext';
 import { useAddress } from '../context/AddressContext';
+import { useOrders } from '../context/OrderContext';
 
 // Mock de formas de pagamento - posteriormente virá de um contexto
 const PAYMENT_METHODS = [
@@ -26,6 +27,7 @@ const DELIVERY_FEE = 8.00;
 export default function CheckoutScreen({ navigation }) {
   const { items, total, clearCart } = useCart();
   const { addresses, defaultAddress } = useAddress();
+  const { addOrder } = useOrders();
   const [selectedAddress, setSelectedAddress] = useState(defaultAddress?.id);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [showAddressModal, setShowAddressModal] = useState(false);
@@ -48,7 +50,35 @@ export default function CheckoutScreen({ navigation }) {
       return;
     }
 
-    // Simulação de confirmação do pedido
+    // Criar objeto do pedido
+    const orderData = {
+      items: data.map(entry => ({
+        id: entry.item.id,
+        name: entry.item.name,
+        price: entry.item.price,
+        qty: entry.qty,
+      })),
+      subtotal: total,
+      deliveryFee: DELIVERY_FEE,
+      total: finalTotal,
+      address: {
+        label: selectedAddressData.label,
+        street: selectedAddressData.street,
+        complement: selectedAddressData.complement,
+        neighborhood: selectedAddressData.neighborhood,
+        city: selectedAddressData.city,
+        state: selectedAddressData.state,
+      },
+      payment: {
+        method: selectedPayment,
+        name: selectedPaymentData.name,
+      },
+    };
+
+    // Salvar pedido no contexto
+    addOrder(orderData);
+
+    // Confirmação
     Alert.alert(
       'Pedido confirmado! 🎉',
       `Seu pedido no valor de ${currency(finalTotal)} foi confirmado!\n\nTempo estimado: 30-40 min`,
