@@ -826,7 +826,7 @@ GitHub: [@matheusesdev](https://github.com/matheusesdev)
 
 ## 🙏 Agradecimentos
 
-Desenvolvido com ❤️ usando React Native e Expo.
+Desenvolvido usando React Native e Expo.
 
 ---
 
