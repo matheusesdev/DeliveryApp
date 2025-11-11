@@ -11,8 +11,8 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from './src/screens/HomeScreen';
 import DetailsScreen from './src/screens/DetailsScreen';
 import CartScreen from './src/screens/CartScreen';
-// Tela de placeholder para seções ainda em construção
-import PlaceholderScreen from './src/screens/PlaceholderScreen';
+import SearchScreen from './src/screens/SearchScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
 import { CartProvider, useCart } from './src/context/CartContext';
 
 const Tab = createBottomTabNavigator();
@@ -67,17 +67,15 @@ function TabNavigator() {
       <Tab.Screen name="HomeStack" component={HomeStack} options={{ title: 'Home' }} />
       {/* A aba do carrinho mostra o total de itens para dar feedback imediato */}
       <Tab.Screen name="Cart" component={CartScreen} options={{ title: `Pedido${count ? ` (${count})` : ''}` }} />
-      {/* Abas ainda não implementadas ganham uma tela simpática de "Em construção" */}
+      {/* Telas de busca e perfil agora implementadas */}
       <Tab.Screen
         name="Search"
-        component={PlaceholderScreen}
-        initialParams={{ message: 'Busca – em construção' }}
+        component={SearchScreen}
         options={{ title: 'Buscar' }}
       />
       <Tab.Screen
         name="Profile"
-        component={PlaceholderScreen}
-        initialParams={{ message: 'Perfil – em construção' }}
+        component={ProfileScreen}
         options={{ title: 'Perfil' }}
       />
     </Tab.Navigator>
