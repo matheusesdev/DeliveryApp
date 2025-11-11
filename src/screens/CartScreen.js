@@ -4,7 +4,7 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useCart, currency } from '../context/CartContext';
 
-export default function CartScreen() {
+export default function CartScreen({ navigation }) {
   const { items, increment, decrement, removeItem, total } = useCart();
   // Transformamos o dicionário em lista para o FlatList.
   const data = Object.values(items);
@@ -46,7 +46,11 @@ export default function CartScreen() {
           <Text style={styles.totalLabel}>TOTAL</Text>
           <Text style={styles.total}>{currency(total)}</Text>
         </View>
-        <TouchableOpacity style={styles.checkout} disabled={total === 0}>
+        <TouchableOpacity 
+          style={styles.checkout} 
+          disabled={total === 0}
+          onPress={() => navigation.navigate('Checkout')}
+        >
           <Text style={styles.checkoutText}>FINALIZAR PEDIDO</Text>
         </TouchableOpacity>
       </View>

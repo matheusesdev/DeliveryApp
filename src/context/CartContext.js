@@ -51,6 +51,11 @@ export function CartProvider({ children }) {
     });
   };
 
+  // Limpa todo o carrinho (usado após confirmação do pedido)
+  const clearCart = () => {
+    setItems({});
+  };
+
   // Derivados úteis para mostrar no UI (badge na tab e total do pedido)
   const { count, total } = useMemo(() => {
     const values = Object.values(items);
@@ -60,7 +65,7 @@ export function CartProvider({ children }) {
   }, [items]);
 
   const value = useMemo(
-    () => ({ items, addItem, removeItem, increment, decrement, count, total }),
+    () => ({ items, addItem, removeItem, increment, decrement, clearCart, count, total }),
     [items, count, total]
   );
 

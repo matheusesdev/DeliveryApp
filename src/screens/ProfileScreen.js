@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   // Estados para as configurações
   const [notifications, setNotifications] = useState(true);
   const [promotions, setPromotions] = useState(true);
@@ -39,7 +39,7 @@ export default function ProfileScreen() {
   };
 
   const handleAddresses = () => {
-    Alert.alert('Endereços', 'Funcionalidade em desenvolvimento');
+    navigation.navigate('Addresses');
   };
 
   const handleSupport = () => {
